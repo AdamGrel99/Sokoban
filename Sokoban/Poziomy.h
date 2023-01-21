@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+
+/*
 char level1[9][8]{
 		{'X','X','X','X','X','X','X','X'},
 		{'X','X','X',' ',' ',' ','X','X'},
@@ -18,6 +21,30 @@ int boyY = 2;
 int m = 9;
 int n = 8;
 int numberOfTargetsOnThisLevel = 7;
+*/
+
+struct TestStruct {
+	std::vector<std::vector<char>> level;
+	int boyX;
+	int boyY;
+	int m;
+	int n;
+	int numberOfTargetsOnThisLevel;
+};
+
+std::vector<std::vector<char>> levelxd{
+		{'X','X','X','X','X','X','X','X'},
+		{'X','X','X',' ',' ',' ','X','X'},
+		{'X','0','&','S',' ',' ','X','X'},
+		{'X','X','X',' ','S','0','X','X'},
+		{'X','0','X','X','S',' ','X','X'},
+		{'X',' ','X',' ','0',' ','X','X'},
+		{'X','S',' ','$','S','S','0','X'},
+		{'X',' ',' ',' ','0',' ',' ','X'},
+		{'X','X','X','X','X','X','X','X'}
+};
+
+TestStruct xd = { levelxd,2,2,9,8,7 };
 
 /*
 char level2[10][14]{

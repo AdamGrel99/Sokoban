@@ -3,15 +3,13 @@
 #include <Windows.h>
 #include "Poziomy.h"
 
-using namespace std;
-
 // zmienne menu
 enum class Game { MAIN, START, OPTION, INSTRUCTION };
 Game mode = Game::START;
 int menu = 0;
 // zmienne opcje
 int option = 0;
-string tabLevel[10] = { "LEVEL 1", "LEVEL 2", "LEVEL 3", "LEVEL 4", "LEVEL 5", "LEVEL 6", "LEVEL 7", "LEVEL 8", "LEVEL 9", "LEVEL 10" };
+std::string tabLevel[10] = { "LEVEL 1", "LEVEL 2", "LEVEL 3", "LEVEL 4", "LEVEL 5", "LEVEL 6", "LEVEL 7", "LEVEL 8", "LEVEL 9", "LEVEL 10" };
 char tabCharacter[3] = { '&', '#', 'E'};
 char tabBox[3] = { 'S', 'a', '<'};
 char tabBoxOnTheTarget[3] = { '$', '@', '=' };
@@ -36,6 +34,13 @@ bool ifCorrectMoveBoy = false;
 char variableToMoveBox1 = ' ';
 char variableToMoveBox2 = ' ';
 bool ifCorrectMoveBox = false;
+// tymczasowe obejscie struktury
+std::vector<std::vector<char>> level1 = xd.level;
+int boyY = xd.boyY;
+int boyX = xd.boyX;
+int m = xd.m;
+int n = xd.n;
+int numberOfTargetsOnThisLevel = xd.numberOfTargetsOnThisLevel;
 
 // funckje pomocnicze
 
@@ -135,16 +140,16 @@ void game_Draw() {
 
 	for (int i = 0; i < m; i++) {
 		for (int j = 0; j < n; j++) {
-			cout << level1[i][j];
+			std::cout << level1[i][j];
 			if (level1[i][j] == boxOnTheTarget) {
 				countOfTargets++;
 			}
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
 
-	cout << endl << "Moves: " << countOfMove << endl;
-	cout << "Targets: " << countOfTargets << "/" << numberOfTargetsOnThisLevel << endl;
+	std::cout << std::endl << "Moves: " << countOfMove << std::endl;
+	std::cout << "Targets: " << countOfTargets << "/" << numberOfTargetsOnThisLevel << std::endl;
 
 	// Opcja zwiekszania targetów oraz warunek koñca levela
 	if (countOfTargets == numberOfTargetsOnThisLevel) {
