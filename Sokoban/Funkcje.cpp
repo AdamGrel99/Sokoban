@@ -1,41 +1,8 @@
 #include <iostream>
-#include <conio.h>
 #include <Windows.h>
-#include "Poziomy.h"
+#include "Funkcje.h"
 
 using namespace std;
-
-// zmienne menu
-enum class Game { MAIN, START, OPTION, INSTRUCTION };
-Game mode = Game::START;
-int menu = 0;
-// zmienne opcje
-int option = 0;
-string tabLevel[10] = { "LEVEL 1", "LEVEL 2", "LEVEL 3", "LEVEL 4", "LEVEL 5", "LEVEL 6", "LEVEL 7", "LEVEL 8", "LEVEL 9", "LEVEL 10" };
-char tabCharacter[3] = { '&', '#', 'E'};
-char tabBox[3] = { 'S', 'a', '<'};
-char tabBoxOnTheTarget[3] = { '$', '@', '=' };
-int typeLevel = 0;
-int typeCharacter = 0;
-int typeBox = 0;
-char character = '&';
-char box = 'S';
-char boxOnTheTarget = '$';
-const char forbiddenField = 'X';
-const char emptyField = ' ';
-const char targetField = '0';
-// zmienne gry
-int countOfMove{}, countOfTargets{};
-enum class Direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
-Direction dir;
-// zmienne do algorytmu przemieszczania siê chopa
-char variableToMove1 = ' ';
-char variableToMove2 = ' ';
-bool ifCorrectMoveBoy = false;
-// zmienne do algorytmu przemieszczania siê skrzyni
-char variableToMoveBox1 = ' ';
-char variableToMoveBox2 = ' ';
-bool ifCorrectMoveBox = false;
 
 // funckje pomocnicze
 
@@ -50,17 +17,33 @@ void idzdoxy(int x, int y) {
 	SetConsoleCursorPosition(hCon, dwPos);
 }
 
-bool ifYouCanGo(int coordinateY, int coordinateX, char field) {
-	if (level1[boyY + coordinateY][boyX + coordinateX] != field) {
+bool checkIfOutOfBoundaries(int coordinateY, int coordinateX) {
+	if (boyY + coordinateY >= m || boyY + coordinateY < 0 || boyX + coordinateX >= n || boyX + coordinateX < 0) {
 		return true;
 	}
 	return false;
 }
+bool ifYouCanGo(int coordinateY, int coordinateX, char field) {
+	if (checkIfOutOfBoundaries(coordinateY,coordinateX)) {
+		return false;
+	}
+	
+	if (level1[boyY + coordinateY][boyX + coordinateX] != field) {
+		return true;
+	}
+
+	return false;
+}
 
 bool ifYouCanGo(int coordinateY1, int coordinateX1, char field1, int coordinateY2, int coordinateX2, char field2) {
+	if (checkIfOutOfBoundaries(coordinateY1, coordinateX1)) {
+		return false;
+	}
+
 	if ((level1[boyY + coordinateY1][boyX + coordinateX1] != field1) && (level1[boyY + coordinateY2][boyX + coordinateX2] == field2)) {
 		return true;
 	}
+
 	return false;
 }
 
@@ -124,13 +107,13 @@ void movementAlgorithm(int coordinateY, int coordinateX, char& temp1, char& temp
 
 // funkcje g³ówne
 
-void normal_Setup() {
+void normalSetup() {
 	dir = Direction::STOP;
 	countOfMove = 0;
 	countOfTargets = 0;
 }
 
-void game_Draw() {
+void gameDraw() {
 	idzdoxy(0, 0);
 
 	for (int i = 0; i < m; i++) {
@@ -156,7 +139,7 @@ void game_Draw() {
 	}
 }
 
-void game_Input() {
+void gameInput() {
 	if ((GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))) {
 		dir = Direction::LEFT;
 	}
@@ -174,7 +157,7 @@ void game_Input() {
 	}
 }
 
-void game_Logic() {
+void gameLogic() {
 	//	Poruszanie sie po polach dozwolonych dla chlopa
 	switch (dir) {
 	case Direction::UP:
@@ -344,7 +327,7 @@ void game_Logic() {
 		}
 		ifCorrectMoveBoy = false;
 	}
-		
+	
 	// zapobieganie problemowi dowolnemu naciskaniu przycisków podczas gry
 	dir = Direction::STOP;
 }
@@ -362,11 +345,11 @@ void startGame() {
 			//game_Instruction();
 		}
 		else {
-			normal_Setup();
+			normalSetup();
 			while (mode == Game::START) {
-				game_Draw();
-				game_Input();
-				game_Logic();
+				gameDraw();
+				gameInput();
+				gameLogic();
 			}
 		}
 	}
