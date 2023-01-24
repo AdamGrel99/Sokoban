@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Poziomy.h"
-#include "Zmienne.h"
+#include "ZmienneGry.h"
+#include "ZmienneMenu.h"
 
-void startGame();
+// funkcje dla gry
+void normalSetup();
+void gameDraw();
+void gameInput();
+void gameLogic();

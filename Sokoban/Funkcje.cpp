@@ -23,12 +23,13 @@ bool checkIfOutOfBoundaries(int coordinateY, int coordinateX) {
 	}
 	return false;
 }
+
 bool ifYouCanGo(int coordinateY, int coordinateX, char field) {
 	if (checkIfOutOfBoundaries(coordinateY,coordinateX)) {
 		return false;
 	}
 	
-	if (level1[boyY + coordinateY][boyX + coordinateX] != field) {
+	if (levelInGame[boyY + coordinateY][boyX + coordinateX] != field) {
 		return true;
 	}
 
@@ -40,7 +41,7 @@ bool ifYouCanGo(int coordinateY1, int coordinateX1, char field1, int coordinateY
 		return false;
 	}
 
-	if ((level1[boyY + coordinateY1][boyX + coordinateX1] != field1) && (level1[boyY + coordinateY2][boyX + coordinateX2] == field2)) {
+	if ((levelInGame[boyY + coordinateY1][boyX + coordinateX1] != field1) && (levelInGame[boyY + coordinateY2][boyX + coordinateX2] == field2)) {
 		return true;
 	}
 
@@ -50,27 +51,27 @@ bool ifYouCanGo(int coordinateY1, int coordinateX1, char field1, int coordinateY
 void movementAlgorithm(int coordinateY, int coordinateX, char field, char& temp1, char& temp2) {
 	switch (dir) {
 	case Direction::UP:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY + 1][coordinateX] = temp1;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY + 1][coordinateX] = temp1;
 		temp1 = temp2;
 		break;
 	case Direction::LEFT:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY][coordinateX + 1] = temp1;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY][coordinateX + 1] = temp1;
 		temp1 = temp2;
 		break;
 	case Direction::RIGHT:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY][coordinateX - 1] = temp1;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY][coordinateX - 1] = temp1;
 		temp1 = temp2;
 		break;
 	case Direction::DOWN:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY - 1][coordinateX] = temp1;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY - 1][coordinateX] = temp1;
 		temp1 = temp2;
 		break;
 	}
@@ -79,33 +80,40 @@ void movementAlgorithm(int coordinateY, int coordinateX, char field, char& temp1
 void movementAlgorithm(int coordinateY, int coordinateX, char& temp1, char& temp2, char field, char field2) {
 	switch (dir) {
 	case Direction::UP:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY + 1][coordinateX] = field2;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY + 1][coordinateX] = field2;
 		temp1 = temp2;
 		break;
 	case Direction::LEFT:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY][coordinateX + 1] = field2;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY][coordinateX + 1] = field2;
 		temp1 = temp2;
 		break;
 	case Direction::RIGHT:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY][coordinateX - 1] = field2;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY][coordinateX - 1] = field2;
 		temp1 = temp2;
 		break;
 	case Direction::DOWN:
-		temp2 = level1[coordinateY][coordinateX];
-		level1[coordinateY][coordinateX] = field;
-		level1[coordinateY - 1][coordinateX] = field2;
+		temp2 = levelInGame[coordinateY][coordinateX];
+		levelInGame[coordinateY][coordinateX] = field;
+		levelInGame[coordinateY - 1][coordinateX] = field2;
 		temp1 = temp2;
 		break;
 	}
 }
 
-// funkcje g³ówne
+// funkcje g³ówne do gry
+void returnSetup() {
+	normalSetup();
+	levelInGame = level8.numberLevel;
+	boyX = level8.boyX;
+	boyY = level8.boyY;
+	system("cls");
+}
 
 void normalSetup() {
 	dir = Direction::STOP;
@@ -118,8 +126,8 @@ void gameDraw() {
 
 	for (int i = 0; i < m; i++) {
 		for (int j = 0; j < n; j++) {
-			cout << level1[i][j];
-			if (level1[i][j] == boxOnTheTarget) {
+			cout << levelInGame[i][j];
+			if (levelInGame[i][j] == boxOnTheTarget) {
 				countOfTargets++;
 			}
 		}
@@ -154,6 +162,9 @@ void gameInput() {
 	}
 	else if (GetAsyncKeyState(VK_ESCAPE)) {
 		mode = Game::MAIN;
+	}
+	else if (GetAsyncKeyState('Q')) {
+		returnSetup();
 	}
 }
 
@@ -214,19 +225,19 @@ void gameLogic() {
 	if (ifCorrectMoveBox) {
 		switch (dir) {
 		case Direction::UP:
-			if (level1[boyY - 1][boyX] == box) {
+			if (levelInGame[boyY - 1][boyX] == box) {
 				movementAlgorithm(boyY - 2, boyX, box, variableToMoveBox1, variableToMoveBox2);
 				// chroni przed zapisaniem targetField do pamieci i wypisaniem jej przy poruszeniu innej skrzynki
 				if (variableToMoveBox1 == '0') {
-					level1[boyY - 2][boyX] = boxOnTheTarget;
+					levelInGame[boyY - 2][boyX] = boxOnTheTarget;
 					variableToMoveBox1 = emptyField;
 				}
 			}
-			else if (level1[boyY - 1][boyX] == boxOnTheTarget) {
-				if (level1[boyY - 2][boyX] == '0') {
+			else if (levelInGame[boyY - 1][boyX] == boxOnTheTarget) {
+				if (levelInGame[boyY - 2][boyX] == '0') {
 					movementAlgorithm(boyY - 2, boyX, variableToMoveBox1, variableToMoveBox2, boxOnTheTarget, targetField);
 					if (variableToMoveBox1 == '0') {
-						level1[boyY - 2][boyX] = boxOnTheTarget;
+						levelInGame[boyY - 2][boyX] = boxOnTheTarget;
 						variableToMoveBox1 = emptyField;
 					}
 				}
@@ -236,18 +247,18 @@ void gameLogic() {
 			}
 			break;
 		case Direction::LEFT:
-			if (level1[boyY][boyX - 1] == box) {
+			if (levelInGame[boyY][boyX - 1] == box) {
 				movementAlgorithm(boyY, boyX - 2, box, variableToMoveBox1, variableToMoveBox2);
 				if (variableToMoveBox1 == '0') {
-					level1[boyY][boyX - 2] = boxOnTheTarget;
+					levelInGame[boyY][boyX - 2] = boxOnTheTarget;
 					variableToMoveBox1 = emptyField;
 				}
 			}
-			else if (level1[boyY][boyX - 1] == boxOnTheTarget) {
-				if (level1[boyY][boyX - 2] == '0') {
+			else if (levelInGame[boyY][boyX - 1] == boxOnTheTarget) {
+				if (levelInGame[boyY][boyX - 2] == '0') {
 					movementAlgorithm(boyY, boyX - 2, variableToMoveBox1, variableToMoveBox2, boxOnTheTarget, targetField);
 					if (variableToMoveBox1 == '0') {
-						level1[boyY][boyX - 2] = boxOnTheTarget;
+						levelInGame[boyY][boyX - 2] = boxOnTheTarget;
 						variableToMoveBox1 = emptyField;
 					}
 				}
@@ -257,18 +268,18 @@ void gameLogic() {
 			}
 			break;
 		case Direction::RIGHT:
-			if (level1[boyY][boyX + 1] == box) {
+			if (levelInGame[boyY][boyX + 1] == box) {
 				movementAlgorithm(boyY, boyX + 2, box, variableToMoveBox1, variableToMoveBox2);
 				if (variableToMoveBox1 == '0') {
-					level1[boyY][boyX + 2] = boxOnTheTarget;
+					levelInGame[boyY][boyX + 2] = boxOnTheTarget;
 					variableToMoveBox1 = emptyField;
 				}
 			} 
-			else if (level1[boyY][boyX + 1] == boxOnTheTarget) {
-				if (level1[boyY][boyX + 2] == '0') {
+			else if (levelInGame[boyY][boyX + 1] == boxOnTheTarget) {
+				if (levelInGame[boyY][boyX + 2] == '0') {
 					movementAlgorithm(boyY, boyX + 2, variableToMoveBox1, variableToMoveBox2, boxOnTheTarget, targetField);
 					if (variableToMoveBox1 == '0') {
-						level1[boyY][boyX + 2] = boxOnTheTarget;
+						levelInGame[boyY][boyX + 2] = boxOnTheTarget;
 						variableToMoveBox1 = emptyField;
 					}
 				}
@@ -278,17 +289,17 @@ void gameLogic() {
 			}
 			break;
 		case Direction::DOWN:
-			if (level1[boyY + 1][boyX] == box) {
+			if (levelInGame[boyY + 1][boyX] == box) {
 				movementAlgorithm(boyY + 2, boyX, box, variableToMoveBox1, variableToMoveBox2);
 				if (variableToMoveBox1 == '0') {
-					level1[boyY + 2][boyX] = boxOnTheTarget;
+					levelInGame[boyY + 2][boyX] = boxOnTheTarget;
 					variableToMoveBox1 = emptyField;
 				}
-			}else if (level1[boyY + 1][boyX] == boxOnTheTarget) {
-				if (level1[boyY + 2][boyX] == '0') {
+			}else if (levelInGame[boyY + 1][boyX] == boxOnTheTarget) {
+				if (levelInGame[boyY + 2][boyX] == '0') {
 					movementAlgorithm(boyY + 2, boyX, variableToMoveBox1, variableToMoveBox2, boxOnTheTarget, targetField);
 					if (variableToMoveBox1 == '0') {
-						level1[boyY + 2][boyX] = boxOnTheTarget;
+						levelInGame[boyY + 2][boyX] = boxOnTheTarget;
 						variableToMoveBox1 = emptyField;
 					}
 				}
@@ -330,27 +341,4 @@ void gameLogic() {
 	
 	// zapobieganie problemowi dowolnemu naciskaniu przycisków podczas gry
 	dir = Direction::STOP;
-}
-
-void startGame() {
-	//game_Setup();
-	while (true) {
-		if (mode == Game::MAIN) {
-			//main_Menu();
-		}
-		else if (mode == Game::OPTION) {
-			//game_Option();
-		}
-		else if (mode == Game::INSTRUCTION) {
-			//game_Instruction();
-		}
-		else {
-			normalSetup();
-			while (mode == Game::START) {
-				gameDraw();
-				gameInput();
-				gameLogic();
-			}
-		}
-	}
 }

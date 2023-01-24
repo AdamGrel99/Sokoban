@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 struct Level {
 	std::vector<std::vector<char>> numberLevel;
@@ -12,7 +13,7 @@ struct Level {
 	int numberOfTargetsOnThisLevel;
 };
 
-std::vector<std::vector<char>> boardOfLevel1{
+static std::vector<std::vector<char>> boardOfLevel1{
 		{'X','X','X','X','X','X','X','X'},
 		{'X','X','X',' ',' ',' ','X','X'},
 		{'X','0','&','S',' ',' ','X','X'},
@@ -24,10 +25,7 @@ std::vector<std::vector<char>> boardOfLevel1{
 		{'X','X','X','X','X','X','X','X'}
 };
 
-Level leveltest{ boardOfLevel1, 2, 2, 9, 8, 7 };
-
-/*
-char level2[10][14]{
+static std::vector<std::vector<char>> boardOfLevel2{
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','0','0',' ',' ','X',' ',' ',' ',' ',' ','X','X','X'},
 		{'X','0','0',' ',' ','X',' ','S',' ',' ','S',' ',' ','X'},
@@ -39,15 +37,8 @@ char level2[10][14]{
 		{'X','X','X',' ',' ',' ',' ','X',' ',' ',' ',' ',' ','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X'}
 };
-int boyX = 7;
-int boyY = 4;
-int m = 10;
-int n = 14;
-int numberOfTargetsOnThisLevel = 10;
-*/
 
-/*
-char level3[10][17]{
+static std::vector<std::vector<char>> boardOfLevel3{
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X',' ',' ',' ',' ',' ','&','X','X'},
 		{'X','X','X','X','X','X','X','X','X',' ','S','X','S',' ','X','X','X'},
@@ -59,13 +50,8 @@ char level3[10][17]{
 		{'X','0','0','0','0',' ',' ','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'}
 };
-int boyX = 14;
-int boyY = 1;
-int m = 10;
-int n = 17;
-int numberOfTargetsOnThisLevel = 11;
 
-char level4[13][17]{
+static std::vector<std::vector<char>> boardOfLevel4{
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X',' ',' ',' ','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X',' ','X','S','X','X',' ',' ','X'},
@@ -80,13 +66,8 @@ char level4[13][17]{
 		{'X','X','X','X','X','X','X','X','X','X','X',' ',' ',' ',' ','X','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'}
 };
-int boyX = 15;
-int boyY = 7;
-int m = 13;
-int n = 17;
-int numberOfTargetsOnThisLevel = 12;
 
-char level5[11][12]{
+static std::vector<std::vector<char>> boardOfLevel5{
 		{'X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','0','0',' ',' ','X','X','X','X','&','X','X'},
 		{'X','0','0',' ',' ','X','X','X',' ',' ',' ','X'},
@@ -99,13 +80,8 @@ char level5[11][12]{
 		{'X','X','X','X',' ',' ','X','X',' ',' ',' ','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X','X'}
 };
-int boyX = 9;
-int boyY = 1;
-int m = 11;
-int n = 12;
-int numberOfTargetsOnThisLevel = 10;
 
-char level6[12][13]{  // dokonczyc
+static std::vector<std::vector<char>> boardOfLevel6{
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X',' ',' ',' ','X','X'},
 		{'X','X',' ','X',' ','&','X','X',' ','S','S',' ','X'},
@@ -119,13 +95,8 @@ char level6[12][13]{  // dokonczyc
 		{'X',' ',' ','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X'}
 };
-int boyX = 9;
-int boyY = 1;
-int m = 13;
-int n = 17;
-int numberOfTargetsOnThisLevel = 11;
 
-char level7[18][17]{
+static std::vector<std::vector<char>> boardOfLevel7{
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X',' ',' ','0','0','0','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X',' ',' ','0','0','0','X'},
@@ -145,13 +116,8 @@ char level7[18][17]{
 		{'X','X','X','X','X','X','X','X','X',' ',' ','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'}
 };
-int boyX = 10;
-int boyY = 7;
-int m = 18;
-int n = 17;
-int numberOfTargetsOnThisLevel = 15;
 
-char level8[15][19]{
+static std::vector<std::vector<char>> boardOfLevel8{
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X',' ',' ','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X',' ',' ','X','X','X','S',' ','X','X','X','X','X','X'},
@@ -168,9 +134,13 @@ char level8[15][19]{
 		{'X','0','0','0','0','0','X','X','X','X','X','X','X','X','X','X','X','X','X'},
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X','X'}
 };
-int boyX = 7;
-int boyY = 3;
-int m = 15;
-int n = 19;
-int numberOfTargetsOnThisLevel = 14;
-*/
+
+static Level level1{ boardOfLevel1, 2, 2, 9, 8, 7 };
+static Level level2{ boardOfLevel2, 7, 4, 10, 14, 10 };
+static Level level3{ boardOfLevel3, 14, 1, 10, 17, 11 };
+static Level level4{ boardOfLevel4, 14, 7, 13, 17, 12 };
+static Level level5{ boardOfLevel5, 9, 1, 11, 12, 10 };
+static Level level6{ boardOfLevel6, 5, 2, 12, 13, 11 };
+static Level level7{ boardOfLevel7, 1, 10, 18, 17, 15 };
+static Level level8{ boardOfLevel8, 7, 3, 15, 19, 14 };
+
