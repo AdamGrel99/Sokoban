@@ -7,5 +7,11 @@
 // funkcje dla gry
 void normalSetup();
 void gameDraw();
-void gameInput();
+void gameInput(Game& mode);
 void gameLogic();
+
+// funkcje dla menu
+void HideCursor();
+void gameInstruction(Game& mode);
+void gameOption(Game& mode);
+void mainMenu(Game& mode);

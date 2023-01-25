@@ -1,12 +1,11 @@
 #include <iostream>
 #include <Windows.h>
 #include "Funkcje.h"
-
-using namespace std;
+#include "Poziomy.h"
 
 // funckje pomocnicze
 
-void idzdoxy(int x, int y) {
+void goToXY(int x, int y) {
 	HANDLE hCon;
 	COORD dwPos;
 
@@ -15,6 +14,18 @@ void idzdoxy(int x, int y) {
 
 	hCon = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hCon, dwPos);
+}
+
+void changeLevelDisplay() {
+	for (auto& level : vectorOfLevels) {
+		for (int i = 0; i < level.m; i++) {
+			for (int j = 0; j < level.n; j++) {
+				if (level.numberLevel[i][j] == ) {
+
+				}
+			}
+		}
+	}
 }
 
 bool checkIfOutOfBoundaries(int coordinateY, int coordinateX) {
@@ -106,13 +117,233 @@ void movementAlgorithm(int coordinateY, int coordinateX, char& temp1, char& temp
 	}
 }
 
+// funkcje do menu
+
+void HideCursor() {
+	::HANDLE hConsoleOut = ::GetStdHandle(STD_OUTPUT_HANDLE);
+	::CONSOLE_CURSOR_INFO hCCI;
+	::GetConsoleCursorInfo(hConsoleOut, &hCCI);
+	hCCI.bVisible = FALSE;
+	::SetConsoleCursorInfo(hConsoleOut, &hCCI);
+}
+
+void moveInMenu(int& option, int max) {
+	if (option < 0) {
+		option = max;
+	}
+	else if (option > max) {
+		option = 0;
+	}
+}
+
+void gameOption(Game& mode) {
+	std::system("cls");
+
+	switch (option) {
+	case 0:
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2); // zielony
+		std::cout << ">> Level : " << tabLevel[typeLevel] << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // domylny bia³y
+		std::cout << "Box : " << std::endl;
+		std::cout << "Character : " << std::endl;
+		break;
+	case 1:
+		std::cout << "Level : " << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << ">> Box : " << tabBox[typeBox] << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		std::cout << "Character : " << std::endl;
+		break;
+	case 2:
+		std::cout << "Level : " << std::endl;
+		std::cout << "Box : " << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << ">> Character : " << tabCharacter[typeCharacter] << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		break;
+	}
+	std::system("pause>0");
+
+	if (GetAsyncKeyState(VK_ESCAPE)) {
+		if (box != tabBox[typeBox]) {
+			boxChanged = true;
+		}
+		box = tabBox[typeBox];
+		boxOnTheTarget = tabBoxOnTheTarget[typeBox];
+		if (character != tabCharacter[typeCharacter]) {
+			characterChanged = true;
+		}
+		character = tabCharacter[typeCharacter];
+
+		levelInGame = vectorOfLevels[typeLevel].numberLevel;
+		boyX = vectorOfLevels[typeLevel].boyX;
+		boyY = vectorOfLevels[typeLevel].boyY;
+		m = vectorOfLevels[typeLevel].m;
+		n = vectorOfLevels[typeLevel].n;
+		numberOfTargetsOnThisLevel = vectorOfLevels[typeLevel].numberOfTargetsOnThisLevel;
+
+		mode = Game::MAIN;
+		std::system("cls");
+	}
+	else if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A')) {
+		if (option == 0) {
+			typeLevel--;
+		}
+		else if (option == 1) {
+			typeBox--;
+		}
+		else if (option == 2) {
+			typeCharacter--;
+		}
+	}
+	else if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D')) {
+		if (option == 0) {
+			typeLevel++;
+		}
+		if (option == 1) {
+			typeBox++;
+		}
+		else if (option == 2) {
+			typeCharacter++;
+		}
+	}
+	else if (GetAsyncKeyState(VK_DOWN) || GetAsyncKeyState('S')) {
+		option++;
+		Sleep(80);
+	}
+	else if (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W')) {
+		option--;
+		Sleep(80);
+	}
+
+	moveInMenu(option, 2);
+	moveInMenu(typeBox, 2);
+	moveInMenu(typeCharacter, 2);
+	moveInMenu(typeLevel, 7);
+}
+
+void gameInstruction(Game& mode) {
+	std::system("cls");
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+	std::cout << "*** Instruction Sokoban Game ***" << std::endl << std::endl;
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	std::cout << "These are the default controls for playing Sokoban :" << std::endl << std::endl;;
+	std::cout << "- Arrow or 'WASD' keys for movement." << std::endl;
+	std::cout << "- Q for reset." << std::endl;
+	std::cout << "- ESC for return." << std::endl << std::endl;
+
+	std::cout << "These are the specific rules to solve a Classic puzzle :" << std::endl << std::endl;;
+	std::cout << "- Only one box can be pushed at a time." << std::endl;
+	std::cout << "- A box cannot be pulled." << std::endl;
+	std::cout << "- The player cannot walk through boxes or walls." << std::endl;
+	std::cout << "- The puzzle is solved when all boxes are on the goals." << std::endl << std::endl;
+
+	std::cout << "In Options you can change character and box, if you like." << std::endl;
+	std::cout << "Good luck" << std::endl;
+
+	std::system("pause>0");
+
+	if (GetAsyncKeyState(VK_ESCAPE)) {
+		mode = Game::MAIN;
+	}
+}
+
+void mainMenu(Game& mode) {
+	std::system("cls");
+
+	switch (menu) {
+	case 0:
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2); // zielony
+		std::cout << ">> Play the Game" << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // domylny bia³y
+		std::cout << "Option" << std::endl;
+		std::cout << "Instruction" << std::endl;
+		std::cout << "End Game" << std::endl;
+		break;
+	case 1:
+		std::cout << "Play the Game" << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << ">> Option" << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		std::cout << "Instruction" << std::endl;
+		std::cout << "End Game" << std::endl;
+		break;
+	case 2:
+		std::cout << "Play the Game" << std::endl;
+		std::cout << "Option" << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << ">> Instruction" << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		std::cout << "End Game" << std::endl;
+		break;
+	case 3:
+		std::cout << "Play the Game" << std::endl;
+		std::cout << "Option" << std::endl;
+		std::cout << "Instruction" << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+		std::cout << ">> End Game" << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		break;
+	}
+
+	std::system("pause>0");
+	
+	if (GetAsyncKeyState(VK_RETURN)) {
+		switch (menu) {
+		case 0:
+			mode = Game::START;
+			std::system("cls");
+			break;
+		case 1:
+			mode = Game::OPTION;
+			std::system("cls");
+			break;
+		case 2:
+			mode = Game::INSTRUCTION;
+			std::system("cls");
+			break;
+		case 3:
+			std::system("cls");
+			exit(0);
+			break;
+		}
+	}
+
+	// naprawia b³¹d wynikaj¹cy z naciœniêcie 'wasd' przed nacisnieciem play the game (dir = stop)
+	if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A') || GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D')) {
+		dir = Direction::STOP;
+	}
+	else if (GetAsyncKeyState(VK_DOWN) || GetAsyncKeyState('S')) {
+		dir = Direction::STOP;
+		menu++;
+		Sleep(80);
+	}
+	else if (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W')) {
+		dir = Direction::STOP;
+		menu--;
+		Sleep(80);
+	}
+	else if (GetAsyncKeyState(VK_ESCAPE)) {
+		std::system("cls");
+		exit(0);
+	}
+
+	moveInMenu(menu, 3);
+}
+
 // funkcje g³ówne do gry
-void returnSetup() {
+
+void resetSetup() {
 	normalSetup();
-	levelInGame = level8.numberLevel;
-	boyX = level8.boyX;
-	boyY = level8.boyY;
-	system("cls");
+	levelInGame = vectorOfLevels[typeLevel].numberLevel;
+	boyX = vectorOfLevels[typeLevel].boyX;
+	boyY = vectorOfLevels[typeLevel].boyY;
+	m = vectorOfLevels[typeLevel].m;
+	n = vectorOfLevels[typeLevel].n;
+	numberOfTargetsOnThisLevel = vectorOfLevels[typeLevel].numberOfTargetsOnThisLevel;
+	std::system("cls");
 }
 
 void normalSetup() {
@@ -122,32 +353,51 @@ void normalSetup() {
 }
 
 void gameDraw() {
-	idzdoxy(0, 0);
+	goToXY(0, 0);
 
 	for (int i = 0; i < m; i++) {
 		for (int j = 0; j < n; j++) {
-			cout << levelInGame[i][j];
+			if (levelInGame[i][j] == boxOnTheTarget || levelInGame[i][j] == targetField) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+			}
+			else if(levelInGame[i][j] == box) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+			}
+			else if (levelInGame[i][j] == character) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
+			}
+			else {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+			}
+			std::cout << levelInGame[i][j];
+			
 			if (levelInGame[i][j] == boxOnTheTarget) {
 				countOfTargets++;
 			}
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
 
-	cout << endl << "Moves: " << countOfMove << endl;
-	cout << "Targets: " << countOfTargets << "/" << numberOfTargetsOnThisLevel << endl;
+	std::cout << std::endl << "Moves: " << countOfMove << std::endl;
+	std::cout << "Targets: " << countOfTargets << "/" << numberOfTargetsOnThisLevel << std::endl;
 
 	// Opcja zwiekszania targetów oraz warunek koñca levela
 	if (countOfTargets == numberOfTargetsOnThisLevel) {
-		exit(0);
+		if (typeLevel == 7) {
+			typeLevel = 0;
+		}
+		else {
+			typeLevel++;
+		}
+		resetSetup();
 	}
 	else {
 		countOfTargets = 0;
-		system("pause>0");
+		std::system("pause>0");
 	}
 }
 
-void gameInput() {
+void gameInput(Game& mode) {
 	if ((GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))) {
 		dir = Direction::LEFT;
 	}
@@ -162,9 +412,10 @@ void gameInput() {
 	}
 	else if (GetAsyncKeyState(VK_ESCAPE)) {
 		mode = Game::MAIN;
+		resetSetup();
 	}
 	else if (GetAsyncKeyState('Q')) {
-		returnSetup();
+		resetSetup();
 	}
 }
 

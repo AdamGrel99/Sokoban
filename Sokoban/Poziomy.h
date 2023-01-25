@@ -17,6 +17,19 @@ static std::vector<std::vector<char>> boardOfLevel1{
 		{'X','X','X','X','X','X','X','X'},
 		{'X','X','X',' ',' ',' ','X','X'},
 		{'X','0','&','S',' ',' ','X','X'},
+		{'X','X','X',' ',' ','$','X','X'},
+		{'X','$','X','X',' ',' ','X','X'},
+		{'X',' ','X',' ','$',' ','X','X'},
+		{'X',' ',' ','$',' ',' ','$','X'},
+		{'X',' ',' ',' ','$',' ',' ','X'},
+		{'X','X','X','X','X','X','X','X'}
+};
+
+/*
+static std::vector<std::vector<char>> boardOfLevel1{
+		{'X','X','X','X','X','X','X','X'},
+		{'X','X','X',' ',' ',' ','X','X'},
+		{'X','0','&','S',' ',' ','X','X'},
 		{'X','X','X',' ','S','0','X','X'},
 		{'X','0','X','X','S',' ','X','X'},
 		{'X',' ','X',' ','0',' ','X','X'},
@@ -24,6 +37,9 @@ static std::vector<std::vector<char>> boardOfLevel1{
 		{'X',' ',' ',' ','0',' ',' ','X'},
 		{'X','X','X','X','X','X','X','X'}
 };
+*/
+
+
 
 static std::vector<std::vector<char>> boardOfLevel2{
 		{'X','X','X','X','X','X','X','X','X','X','X','X','X','X'},

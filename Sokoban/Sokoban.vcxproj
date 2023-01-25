@@ -133,6 +133,8 @@
   <ItemGroup>
     <ClInclude Include="Funkcje.h" />
     <ClInclude Include="Poziomy.h" />
+    <ClInclude Include="ZmienneGry.h" />
+    <ClInclude Include="ZmienneMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

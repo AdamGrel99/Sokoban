@@ -1,26 +1,23 @@
 #include <iostream>
 #include "funkcje.h"
 
-
-using namespace std;
-
 int main() {
-	//game_Setup();
+	HideCursor();
 	while (true) {
 		if (mode == Game::MAIN) {
-			//main_Menu();
+			mainMenu(mode);
 		}
 		else if (mode == Game::OPTION) {
-			//game_Option();
+			gameOption(mode);
 		}
 		else if (mode == Game::INSTRUCTION) {
-			//game_Instruction();
+			gameInstruction(mode);
 		}
 		else {
 			normalSetup();
 			while (mode == Game::START) {
 				gameDraw();
-				gameInput();
+				gameInput(mode);
 				gameLogic();
 			}
 		}
