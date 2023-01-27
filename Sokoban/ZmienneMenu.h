@@ -16,5 +16,3 @@ static char tabBoxOnTheTarget[3] = { '$', '@', '=' };
 static int typeLevel{};
 static int typeCharacter{};
 static int typeBox{};
-static bool characterChanged = false;
-static bool boxChanged = false;

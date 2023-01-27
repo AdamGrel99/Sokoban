@@ -3,9 +3,10 @@
 #include "Funkcje.h"
 #include "Poziomy.h"
 
-// funckje pomocnicze
+// ************ funckje pomocnicze *****************
 
-void goToXY(int x, int y) {
+// funkcja odpowiedzialna za to, aby konsola nie miga³a(je¿eli u¿ywa³bym system("cls")), odpowiada za nadpisywanie isnietj¹cej zawartoœci w konsoli
+void goToXY(int x, int y) {   
 	HANDLE hCon;
 	COORD dwPos;
 
@@ -15,19 +16,7 @@ void goToXY(int x, int y) {
 	hCon = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hCon, dwPos);
 }
-
-void changeLevelDisplay() {
-	for (auto& level : vectorOfLevels) {
-		for (int i = 0; i < level.m; i++) {
-			for (int j = 0; j < level.n; j++) {
-				if (level.numberLevel[i][j] == ) {
-
-				}
-			}
-		}
-	}
-}
-
+// funkcja sprawdza czy wychodzimy poza zakres wektora
 bool checkIfOutOfBoundaries(int coordinateY, int coordinateX) {
 	if (boyY + coordinateY >= m || boyY + coordinateY < 0 || boyX + coordinateX >= n || boyX + coordinateX < 0) {
 		return true;
@@ -117,8 +106,8 @@ void movementAlgorithm(int coordinateY, int coordinateX, char& temp1, char& temp
 	}
 }
 
-// funkcje do menu
-
+// ************ funckje do menu *****************
+// funkcja odpowiedzialna za chowanie kursora podczas odpalania programu (dziala tylko dla wartoœci domyslnych konsoli)
 void HideCursor() {
 	::HANDLE hConsoleOut = ::GetStdHandle(STD_OUTPUT_HANDLE);
 	::CONSOLE_CURSOR_INFO hCCI;
@@ -126,7 +115,7 @@ void HideCursor() {
 	hCCI.bVisible = FALSE;
 	::SetConsoleCursorInfo(hConsoleOut, &hCCI);
 }
-
+// funkcja nie pozwalaj¹ca wyjœc poza zakres w menu i opcjach
 void moveInMenu(int& option, int max) {
 	if (option < 0) {
 		option = max;
@@ -141,9 +130,9 @@ void gameOption(Game& mode) {
 
 	switch (option) {
 	case 0:
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2); // zielony
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
 		std::cout << ">> Level : " << tabLevel[typeLevel] << std::endl;
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // domylny bia³y
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		std::cout << "Box : " << std::endl;
 		std::cout << "Character : " << std::endl;
 		break;
@@ -165,14 +154,8 @@ void gameOption(Game& mode) {
 	std::system("pause>0");
 
 	if (GetAsyncKeyState(VK_ESCAPE)) {
-		if (box != tabBox[typeBox]) {
-			boxChanged = true;
-		}
 		box = tabBox[typeBox];
-		boxOnTheTarget = tabBoxOnTheTarget[typeBox];
-		if (character != tabCharacter[typeCharacter]) {
-			characterChanged = true;
-		}
+		boxOnTheTarget = tabBoxOnTheTarget[typeBox];		
 		character = tabCharacter[typeCharacter];
 
 		levelInGame = vectorOfLevels[typeLevel].numberLevel;
@@ -333,7 +316,7 @@ void mainMenu(Game& mode) {
 	moveInMenu(menu, 3);
 }
 
-// funkcje g³ówne do gry
+// ************ funckje do gry *****************
 
 void resetSetup() {
 	normalSetup();
@@ -355,20 +338,35 @@ void normalSetup() {
 void gameDraw() {
 	goToXY(0, 0);
 
+	std::cout << "*** " << tabLevel[typeLevel] << " ***" << std::endl << std::endl;
+
 	for (int i = 0; i < m; i++) {
 		for (int j = 0; j < n; j++) {
-			if (levelInGame[i][j] == boxOnTheTarget || levelInGame[i][j] == targetField) {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+			if (box != 'S' || character != '&') {
+				if (levelInGame[i][j] == 'S') {
+					levelInGame[i][j] = tabBox[typeBox];
+				}
+				if (levelInGame[i][j] == '$') {
+					levelInGame[i][j] = tabBoxOnTheTarget[typeBox];
+				}
+				if (levelInGame[i][j] == '&') {
+					levelInGame[i][j] = tabCharacter[typeCharacter];
+				}
 			}
-			else if(levelInGame[i][j] == box) {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+
+			if (levelInGame[i][j] == boxOnTheTarget || levelInGame[i][j] == targetField) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2); // zielony
+			}
+			else if (levelInGame[i][j] == box) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5); // fioletowy
 			}
 			else if (levelInGame[i][j] == character) {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6); // ¿ó³ty
 			}
 			else {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // domyslny bia³y
 			}
+
 			std::cout << levelInGame[i][j];
 			
 			if (levelInGame[i][j] == boxOnTheTarget) {
